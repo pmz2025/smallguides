@@ -5,8 +5,13 @@ This is the first guide, everyone has to follow you get the yubikey
 ## Pre-requisites
 
 <need to fill in later on>
+- yubikey-manager (yum install yubikey-manager -y)
+- scdaemon (already installed)
 
 ## Reset Yubikey
+
+This step is optional but i would mention it here because I would be using this in future.
+Do note the default pins
 
 ```bash
 ykman openpgp reset
@@ -19,6 +24,9 @@ Admin PIN:   12345678
 ```
 
 ## Set Admin and PIN (user) on yubikey
+
+This is important step to set the PIN. These PINs are specific to GPG operation.
+FIDO is below
 
 ```bash
 gpg --edit-card
@@ -48,6 +56,8 @@ General key info..: [none]
 ```
 
 ### enter into admin mode
+
+Tp set the pin/passwd, you must enter admin mode.
 
 ```bash
 gpg/card> admin
@@ -84,6 +94,8 @@ PIN changed.
 
 ### Reset FIDO
 
+This is again optional step because FIDO PIN is blank. You must set it
+
 ```bash
 # check the status first
 ykman fido info
@@ -103,6 +115,65 @@ ykman fido access change-pin
 Enter your new PIN: 
 Repeat for confirmation: 
 ```
+
+## Set the Touch Policy
+
+This is important step especially when you want to use Touch function for all operations e.g. when you want to read password from pass database. Yes, Pass is coming in future guides.
+
+First check the status on the yubikey. By default touch policy is off.
+
+```bash
+OpenPGP version: 3.4
+Application version: 5.4.3
+
+PIN tries remaining: 3
+Reset code tries remaining: 0
+Admin PIN tries remaining: 3
+
+Touch policies
+Signature key           Off
+Encryption key          Off
+Authentication key      Off
+Attestation key         Off
+```
+
+### Information
+
+Before you start, check the help.
+
+```bash
+ykman openpgp keys set-touch -h
+
+#  The most important help/cmd/options are pasted below
+#   KEY     Key slot to set (sig, enc, aut or att).
+#  POLICY  Touch policy to set (on, off, fixed, cached or cached-fixed).
+
+# for each operation, you need to enter admin pin and confirm
+
+# signed
+ykman openpgp keys set-touch sig on
+# encryped
+ykman openpgp keys set-touch enc on
+# authenticated
+ykman openpgp keys set-touch aut on
+
+# finally check
+$ ykman openpgp info
+OpenPGP version: 3.4
+Application version: 5.4.3
+
+PIN tries remaining: 3
+Reset code tries remaining: 0
+Admin PIN tries remaining: 3
+
+Touch policies
+Signature key           On
+Encryption key          On
+Authentication key      On
+Attestation key         Off
+[pzare@rhel22 20:46:19 ~]$ 
+```
+
 
 ### Reference
 
