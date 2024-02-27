@@ -126,7 +126,7 @@ ssb  rsa4096/F42B5D9EF94A7CD4
 [ultimate] (1). Preetam <preetamzare@gmail.com>
 
 # VERY IMPORTANT Step. Do not write Save here unless you have exported the keys
-# Instead type quit, press y
+# Instead type quit, press N (or just enter)
 
 
 gpg> quit
@@ -179,6 +179,5 @@ Signature key           On
 Encryption key          On
 Authentication key      On
 Attestation key         Off
-[pzare@rhel22 06:16:19 ~]$ 
 
 ```

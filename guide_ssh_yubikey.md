@@ -9,8 +9,10 @@ To create a ssh key pair and store it on yubikey
 ### Assumptions
 
 - Yubikey is already prepared and it has FIDO keyset. If FIDO key is not set, you will get errors.How to set this key, i will explain shortly in this document.
-- Yubikey manager is installed
-- All libraries which are required for touch setup are also installed
+- Yubikey manager is installed.
+- All libraries which are required for touch setup are also installed.
+
+>Note: guide_youbikey*.md can help you to configure yubikey.
 
 ### Preparation
 
@@ -19,6 +21,8 @@ You need yubikey manager. This is not installed by default.
  Step:01 Create ssh key pair
 
 #### Generate SSH Key pair
+
+The most important part of the below command `-O resident`
 
 ```bash
 ❯ ssh-keygen -t ecdsa-sk -O resident -C "$(date +%F) $USER@$HOST"
