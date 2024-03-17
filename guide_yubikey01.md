@@ -2,9 +2,8 @@
 
 This is the first guide, everyone has to follow you get the yubikey
 
-## Pre-requisites
+## Pre-requisites (work in progress)
 
-<need to fill in later on>
 - yubikey-manager (yum install yubikey-manager -y)
 - scdaemon (already installed)
 
