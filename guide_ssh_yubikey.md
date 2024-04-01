@@ -94,6 +94,17 @@ ssh-keygen -K
 
 ``` 
 
+### Additional keys on yubikeys
+
+```bash
+
+Just use -O application=ssh:Yourtexthere
+
+# So it becomes like this
+ssh-keygen -t ed25519-sk -O resident -O application=ssh:Yourtexthere
+
+```bash
+
 ### Reference
 
 - <https://www.yubico.com/blog/github-now-supports-ssh-security-keys/>
