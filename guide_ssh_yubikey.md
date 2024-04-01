@@ -65,10 +65,37 @@ with this step you are ready to use this key on this computer. e.g. copy the pub
 now, you push or pull changes from github, you just need to press touch on yubikey
 
 But to use this key on another computer, you will need to execute the following commands
+```bash
   cd ~/.ssh
-  ssh-keygen -K (it is capital K)
+  ssh-keygen -K (it is capital K) # the mean of K is explained below
   mv id_ecdsa_sk_rk ~/.ssh/id_ecdsa_sk 
+```
+
+### Additional Guide (just for reference)
+
+#### Adding the new keys
+Now that you have generated a key which you can use, you will need to add it to your current ssh-agent session. You can do that by first starting the agent like so:
+
+```bash
+# start the ssh agent, on gui version it starts automatically
+eval "$(ssh-agent -s)"
+
+# Then add the key on the YubiKey with the command below:
+ssh-add -K
+
+# You can verify that the key was added by listing all the keys available in the current ssh-agent session:
+ssh-add -l
+
+# We just added our brand new ssh key temporarily to our current session. If you would like to have it permanently available on the system you can run the command:
+
+ssh-keygen -K
+
+#  This retrieves our ssh key from our YubiKey and puts the private (still protected by YubiKey) and public key in the current working directory. You must now rename them accordingly to id_ed25519_sk and id_ed25519_sk.pub and place them in your ~/.ssh directory so ssh can detect them.
+
+``` 
 
 ### Reference
 
 - <https://www.yubico.com/blog/github-now-supports-ssh-security-keys/>
+- [Great reference on resident keys](https://gist.github.com/Kranzes/be4fffba5da3799ee93134dc68a4c67b)
+
