@@ -110,3 +110,15 @@ ssh-keygen -t ed25519-sk -O resident -O application=ssh:Yourtexthere
 - <https://www.yubico.com/blog/github-now-supports-ssh-security-keys/>
 - [Great reference on resident keys](https://gist.github.com/Kranzes/be4fffba5da3799ee93134dc68a4c67b)
 
+## MAC Guide
+
+Things are bit different because of openssh. So here is the guide.
+
+Step:01 
+brew install gnupg
+brew install openssh
+
+# below things are required to get a prompt.
+brew install michaelroosz/ssh/libsk-libfido2-install
+SSH_ASKPASS=/opt/homebrew/bin/ssh-askpass
+SSH_SK_PROVIDER=/usr/local/lib/libsk-libfido2.dylib
