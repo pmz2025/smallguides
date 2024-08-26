@@ -6,7 +6,7 @@
 You need to transfer keys to card. But remember you need to export your keys before doing so.
 I have done this. But I will update this part later on. But for time being, when you are finished transfering your key to card, 
 
-!!! Do not type save, INSTEAD type quit and press N and Y
+!!! Do not type `save`, INSTEAD type quit and press `N` and `Y`
 
 ```bash
 # edit key
@@ -137,7 +137,8 @@ Quit without saving? (y/N)
 
 
 ```
-## Check if the Touch policies are ON
+## Check if the Touch policies are ON.
+Note: Even if you have set the touch policy on, after you transfer the key, touch policy will get reset to defaults i.e. `Off`
 
 ```bash
 $ ykman openpgp info
