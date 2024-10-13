@@ -4,8 +4,8 @@ This is the first guide, everyone has to follow you get the yubikey
 
 ## Pre-requisites (work in progress)
 
-- yubikey-manager (yum install yubikey-manager -y)
-- scdaemon (already installed)
+- yubikey-manager (yum install yubikey-manager -y). For RHEL you must enable epel repo. The reference is here https://www.redhat.com/sysadmin/install-epel-linux
+- scdaemon (already installed) as part of GPG package, you can check that you using dnf whatprovides */scdaemon
 
 ## Reset Yubikey
 
