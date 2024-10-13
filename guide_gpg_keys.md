@@ -5,9 +5,12 @@ Here is small guide which I always follow to create GPG Keys.
 
 ## Steps to create master key
 
-As a first steps we generate master key to certify and it is our master key. Based on this master key, we will create subkeys. (I need to double check this part)
+As a first steps we generate master key to certify and it is our master key. The Certify key is responsible for issuing Subkeys for encryption, signature and authentication operations.
+
 
 ```bash
+
+gpg --full-generate-key --expert
 
 Possible actions for this RSA key: Sign Certify Encrypt Authenticate 
 Current allowed actions: Certify # <-- Ensure this is always selected i.e. you need to toggle other options
@@ -59,6 +62,19 @@ What is not shown in this guide but i personal feel important to mention.
 You must enter a paraphrase for the master key and this is required in future steps. 
 So always remember this part.
 
+### Where is public and private key?
+
+```bash
+gpg -k --with-colons 
+tru::1:1728846622:0:3:1:5
+pub:u:255:22:32D2A53DFC85DC57:1728846406:::u:::cC:::::ed25519:::0:
+fpr:::::::::A6756AB26A1D1754993FC74932D2A53DFC85DC57:
+uid:u::::1728846406::83ECCBACBE4B048F1FA4086A49BEF93EF724492E::Preetam Zare (Preetam Zare) 
+
+public key is 32D2A53DFC85DC57
+private key is A6756AB26A1D1754993FC74932D2A53DFC85DC57
+```
+
 ## Steps to create sub keys
 
 We are going to create three subkeys and each has its own purpose.
@@ -69,7 +85,7 @@ We are going to create three subkeys and each has its own purpose.
 
 ```bash
 
-[pzare@rhel22 21:51:28 ~]$ gpg --edit-key preetamzare@gmail.com # <-- we are using id of the primary key
+[pzare@rhel22 21:51:28 ~]$ gpg --edit-key --expert preetamzare@gmail.com # <-- we are using id of the primary key
 gpg (GnuPG) 2.3.3; Copyright (C) 2021 Free Software Foundation, Inc.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
