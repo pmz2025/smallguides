@@ -1,4 +1,4 @@
-# How to restore
+# How to restore GPG Keys
 
 Double check that you are working in the right gnupg home: 
 
