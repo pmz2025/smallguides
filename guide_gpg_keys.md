@@ -191,3 +191,7 @@ ssb   rsa4096 2024-08-24 [A] [expires: 2027-08-24]
 ```
 
 In oder to add these keys to yubikey, you can follow guide guide_yukikey02.md
+
+## Reference
+
+[Ultimate Guide for GPG](https://yubikey.jms1.info/introduction.html)
