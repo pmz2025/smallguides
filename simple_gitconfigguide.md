@@ -47,11 +47,12 @@ core.editor=code
 ```
 ### Configure basic things for new setup
 
+```bash
 git config --global user.name myname
 git config --global user.email myemail@email.com
 git config --global core.editor code
 git config --global core.pager 'less -R'
-
+```
 
 ## Reference
 
