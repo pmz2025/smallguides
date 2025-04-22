@@ -58,7 +58,7 @@ pub   rsa4096 2024-08-24 [C]
 uid                      Preetam Zare (Preetam Zare on RHELL) <preetamzare@gmail.com> #<-- this is your id
 
 ```
-What is not shown in this guide but i personal feel important to mention. 
+What is not shown in this guide but I personal feel important to mention. 
 You must enter a paraphrase for the master key and this is required in future steps. 
 So always remember this part.
 
@@ -174,7 +174,7 @@ gpg --armor --export preetamzare@gmail.com >mygpgkeys/master.pub
 gpg --armor --export-secret-subkeys > mygpgkeys/subkeys.key
 
 # export fingerprints of all keys
-gpg --fingerprint --fingerprint preetamzare@gmail.com
+gpg --fingerprint --fingerprint preetamzare@gmail.com > fingerprints.txt
 
 # list secret keys
 
