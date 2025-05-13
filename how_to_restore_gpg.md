@@ -43,6 +43,8 @@ Move the keys into yubikeys following the normal method
 
 ``` bash
 gpg --edit-key $KEYID
+trust
+# selection option = 5
 ```
 
 ## Reference
