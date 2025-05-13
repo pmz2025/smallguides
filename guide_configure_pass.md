@@ -21,14 +21,26 @@ You are ready for the next steps
 ```bash
 export MASTERKEY=$(gpg --list-keys | grep B$ | xargs echo)  `assuming your masterkey ends with B`  
 pass init $MASTERKEY
-pass git init
-pass git remote add <nameOfthePrivateRepo>
+pass git init -b main
+pass git remote add origin <nameOfthePrivateRepo>
 ```
 
 Now add the password and other information to pass and at the end of the day, just do not forget to sync
 
 `pass git push origin main`
 
+### Restore from Backup
+
+```bash
+git init $MASTERKEY
+pass git init -b main
+pass git remote add origin <nameOfthePrivateRepo>
+pass git pull origin main
+>Note: Optional in case you have any sync issues
+pass git fetch
+pass git reset --hard origin/main # this resets the current branch's head to the last commit 
+# fetched from the remote repo (origin), discarding any local changes
+```
 
 ## Reference
 
