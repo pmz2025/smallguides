@@ -1,0 +1,21 @@
+[Unit]
+Description=My Awesome Service
+Documentation=https://example.com/docs
+After=network.target # defines start order but does not dependency
+Requires=postgresql.service # hard dependency
+Wants=redis.service # soft dependency
+
+[Service]
+Type=simple 
+User=appuser # run the service as user or group instead of root
+Group=appgroup # run the service as user or group instead of root
+WorkingDirectory=/opt/myapp # working directory
+ExecStart=/usr/bin/myservice --config /etc/myapp/config.yaml # command to start
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure # when to restart
+RestartSec=5s # how long to wait before restarting the service
+TimeoutStartSec=30s 
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
