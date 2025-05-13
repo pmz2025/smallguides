@@ -9,11 +9,15 @@ kitty + kitten themes
 
 kitty + list-fonts
 
-### kitty + kitten + SSH
+## kitty + kitten + SSH
+
 you should do ssh in the following
 satorni is my openshift server
 
 `kitty + kitten ssh satorni`
+
+You can change the font size using ctrl + shift + F2
+and then you can reload the configuration using ctrl + shift +F5
 
 ## Reference
 
