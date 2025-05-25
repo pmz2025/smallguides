@@ -1,0 +1,6 @@
+[kubernetes]
+name=kubernetes repo
+baseurl=https://pks.k8s.io/core:/stable://v1.33/rpm
+enabled=
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable://v1.33/rpm/repodata/repomd.xml.key
