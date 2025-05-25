@@ -25,3 +25,11 @@ pkill scdaemon
 systemctl restart pcscd
 gpg --card-status
 ```
+
+### When you see gpg: waiting for lock (held by [process_id])
+
+search for a file inside a gpg directory which has extention .lock and delete it.
+
+```bash
+find ~/.gpg -name \*lock -exec rm {} \;
+```
