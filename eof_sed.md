@@ -1,6 +1,6 @@
 # Playing with EOF and sed
 
-## Scenario: I wish to create kubernetes.repo file and it has a empty file which I wish to delete
+## Scenario: I wish to create kubernetes.repo file and it has a empty line (at the end) which I wish to delete
 
 ### First create kubernetes.repo file using EOF
 
@@ -38,7 +38,7 @@ As you can see the line is delete with $ being last line and we escaped `$` with
 now you can use `-i` flag to overwrite existing file
 
 ```bash
-sed -i \$d kubernetes.test
+sed -i \$d kubernetes.test # here i denotes the original file is updated
 cat kubernetes.test
 [kubernetes]
 name=kubernetes repo
@@ -48,3 +48,7 @@ gpgcheck=1
 gpgkey=https://pkgs.k8s.io/core:/stable://v1.33/rpm/repodata/repomd.xml.key
 ```
 
+## References
+
+- [sed – stream editor](https://www.cs.colostate.edu/~cs155/Spring18/Lecture/Commands3)
+- [sed - delete header](https://cloufield.github.io/GWASTutorial/61_sed/#example-2-delete-headerthe-first-line)
