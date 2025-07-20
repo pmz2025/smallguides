@@ -9,11 +9,11 @@ ST = Stockholm
 L = Stockholm
 O = Raindev
 OU = IT
-CN = depot.raindev.io
+CN = developments.apps-crc.testing
 
 [req_ext]
 subjectAltName = @alt_names
 
 [alt_names]
 IP.1 = 192.168.50.145
-DNS.1 = depot.raindev.io
+DNS.1 = developments.apps-crc.testing
