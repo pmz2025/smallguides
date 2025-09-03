@@ -58,7 +58,7 @@ git clone git@github.com:SecretRepoPath.git .password-store
 # check if all went well
 
 pass
-
+```
 ## Reference
 
 [Redhat Pass Config blog](https://www.redhat.com/en/blog/management-password-store)
