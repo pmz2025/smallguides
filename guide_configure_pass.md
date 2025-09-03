@@ -28,7 +28,9 @@ Now add the password and other information to pass and at the end of the day, ju
 
 `pass git push origin main`
 
-### Restore from Backup
+### Restore from Backup 01
+
+This is a method I learned from the internet
 
 ```bash
 git init $MASTERKEY
@@ -40,6 +42,22 @@ pass git fetch
 pass git reset --hard origin/main # this resets the current branch's head to the last commit and To discard local changes to all files, permanently:
 # fetched from the remote repo (origin), discarding any local changes
 ```
+### Restore from Backup 02
+
+This is method I tried using git logic.
+Since we are storing pass database, there is
+no need to init pass. Because pass database, corresponding
+gpgid is also in your git repo. In this case, run a this single command
+
+```bash
+# simple clone the repo into .password-store i.e. all your
+# database will be restored into .password-store folder
+
+git clone git@github.com:SecretRepoPath.git .password-store
+
+# check if all went well
+
+pass
 
 ## Reference
 
