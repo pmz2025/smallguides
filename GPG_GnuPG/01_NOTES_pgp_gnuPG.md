@@ -5,20 +5,22 @@ All information gathered on PGP esp theory and some pro tips
 - PGP stands for Pretty Good Privacy and WAS `pgp` 
 - GnuPG implemented GPG but as OpenPGP or as open source software. Hence these days you heard gpg and not pgp
 - GnuPG is available on all linux distribution
+- listing keys, deleting keys
+- generating revocation certificate
 
 ```shell
 ➤ gpg --list-keys --with-subkey-fingerprint 
-[keyboxd]
----------
-pub   ed25519 2025-04-19 [C]
-      F9E59AC7E9ACD99700C0915856DD6A2CB5829A9B # primary key | fingerprints
-uid           [ultimate] Preetam Zare (On Fedora) <preetamzare@gmail.com> # this is my identity.
-sub   ed25519 2025-04-19 [S] [expires: 2027-04-19] # subkey with Signing capability  | fingerprints
-      645003D587739389CF30D31887E309472536237E
-sub   ed25519 2025-04-19 [A] [expires: 2027-04-19] # subkey with Authentication capability | fingerprints
-      9D9A323AF08542FC06EB90B2C6105623D898B80D
-sub   rsa4096 2025-04-19 [E] [expires: 2027-04-19] # subkey with Encryption capability | fingerprints
-      F3F0043E2CE5160500556C9375C11336DB676992
+/home/sapbmw/newgpgkeys/pubring.kbx
+-----------------------------------
+pub   ed25519 2025-09-12 [C] [expires: 2028-09-11]
+      604AF1A9CF657990CA280E1D0D3F7AA4B8AE629C  # <- primary key | fingerprints
+uid           [ultimate] nodiesop <nodiesop@gmail.com> # this is my identity.
+sub   ed25519 2025-09-12 [S] [expires: 2027-09-12] # <- subkey with Signing capability  | fingerprints
+      C8B8546EE60AF790279E7345B58979650ADF398E
+sub   ed25519 2025-09-12 [A] [expires: 2027-09-12] # <- subkey with Authentication capability | fingerprints
+      90628AA69FA06A549FF66260A6881F8DCCD2DF8D
+sub   cv25519 2025-09-12 [E] [expires: 2027-09-12] # <- subkey with Encryption capability | fingerprints
+      B1679EB215C10026B01D894BBE3A5091E349E2D9
 ``` 
 
 ## Identities
@@ -51,12 +53,21 @@ And when you export your keys, they are exported from this directory i.e. from y
 
 ### How to export your public key
 
+you must export your public key and share with others.
+This is must because the other person
+needs your public key to encrypt the message.
+A message encrypted with public key, can be
+decrypted only by private key of person, whose
+public key was used.
+
 you can export key in 
 
 - binary format.
 - ASCII-armored format. (Human readable)
 
-gpg --export --armor <FingerPrintOfTheKey> # Fingerprint, you will find in gpg --list-keys --with-subkey-fingerprint 
+gpg --export --armor <FingerPrintOfTheKey> # Fingerprint, you will find in gpg --list-keys --with-subkey-fingerprint
+
+gpg --export --armor --output $KEYID.pub.asc $KEYID
 
 
 ### How to import key?
@@ -88,13 +99,12 @@ gpg --list-secret-keys
 ### Deleting keys
 
 ```shell
-gpg --delete-keys # deletes only public keys
-
-gpg --delete-secret-keys # deletes only secret keys
-
+# deleting public and secret key stored in non-default homedirectory
+gpg --homedir $GNUPGHOME --delete-secret-and-public-key 1E11AC7B7E9C5FAF5E6F8731C84E3FAAE02B4F61
 ```
 
 ### How to create revocation certificate
+
 
 gpg --gen-revoke <key> > revocation.asc
 
@@ -116,8 +126,4 @@ It is card which has
 - chip
 - storage: to store primary and sub keys
 - software: do encryption and decryption operations
-
-## How to
-
-Here is all how to questions answered
 

@@ -1,0 +1,13 @@
+[keyboxd]
+---------
+pub   ed25519 2025-04-19 [C]
+      F9E59AC7E9ACD99700C0915856DD6A2CB5829A9B
+uid           [ultimate] Preetam Zare (On Fedora) <preetamzare@gmail.com>
+sig 3        56DD6A2CB5829A9B 2025-04-19  [self-signature]
+sub   ed25519 2025-04-19 [S] [expires: 2027-04-19]
+sig          56DD6A2CB5829A9B 2025-04-19  [self-signature]
+sub   ed25519 2025-04-19 [A] [expires: 2027-04-19]
+sig          56DD6A2CB5829A9B 2025-04-19  [self-signature]
+sub   rsa4096 2025-04-19 [E] [expires: 2027-04-19]
+sig          56DD6A2CB5829A9B 2025-04-19  [self-signature]
+

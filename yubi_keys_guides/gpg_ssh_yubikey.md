@@ -1,6 +1,6 @@
 # How to configure Yubikey for SSH Authentication
 
-Now there is already a guide by name guide_ssh_yubikey.md. This is just an additional one. But this focuses more on server authentication and much simpler.
+This guide talks
 
 ## Steps
 
@@ -41,7 +41,29 @@ SSH_AUTH_SOCK=$(gpgconf --list-dir agent-ssh-socket)
 export SSH_AUTH_SOCK=$(gpgconf --list-dir agent-ssh-socket)
 
 ```
-Now, once this is done, simply use ssh-copy-id command to transfer the key to remote server. You will be asked admin key and touch to copy the key
+now check which keys are shown using 
+
+`ssh-add -L` # show keys, but small l (`-l`) show fingerprints. It might now show the right keys, in case just restart the gpg-agent as shown below
+
+```shell
+➤ ssh-add -l
+256 SHA256:yd8Mx1nYJYrvS/dKFCox4By805wAI3O4S65utntVnmU cardno:14_456_345 (ED25519)
+256 SHA256:w3rqhP23t+6NGWJ3eTNDDL8mEgt6gRf7XuRC2nUExwg dposeidon__satorni2025-05-09 (ED25519)
+
+# above output shows old keys, now restart the gpg-agent
+
+➤ systemctl --user restart gpg-agent.service 
+
+# after restart output now makes senses
+➤ ssh-add -l
+256 SHA256:yd8Mx1nYJYrvS/dKFCox4By805wAI3O4S65utntVnmU cardno:14_456_345 (ED25519)
+256 SHA256:w3rqhP23t+6NGWJ3eTNDDL8mEgt6gRf7XuRC2nUExwg dposeidon__satorni2025-05-09 (ED25519)
+
+```
+
+Now, once this is done, simply use ssh-copy-id command to transfer the key to remote server. You will be asked admin key and touch to copy the key.
+
+
 
 >Do note, you need public key of your master key on the client from where you are planning to copy the key.
 
