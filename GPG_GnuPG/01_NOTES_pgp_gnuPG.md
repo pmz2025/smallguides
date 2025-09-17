@@ -1,12 +1,32 @@
 # Notes on PGP or GnuPGP
 
+## Introduction
+
 All information gathered on PGP esp theory and some pro tips
 
 - PGP stands for Pretty Good Privacy and WAS `pgp` 
-- GnuPG implemented GPG but as OpenPGP or as open source software. Hence these days you heard gpg and not pgp
+- GnuPG is a complete and free implementation of the OpenPGP or as open source software. <br>
+  Hence these days you heard gpg and not pgp
 - GnuPG is available on all linux distribution
+- GnuPG also provides support for S/MIME and SSH
+
+### Home Directory
+
+Home directory (homedir) is where GnuPG stores keyrings and private keys, and <br>
+read configuration from (gpg.conf) <br>
+$HOME/.gnupg is default Home Directory.
+
+You can set your own home directory using $GNUPGHOME as environmental variable or you prepend all
+command with `--homedir`
+
+## What is included here?
+
 - listing keys, deleting keys
 - generating revocation certificate
+
+### Listing keys
+
+list keys (including subkeys)
 
 ```shell
 ➤ gpg --list-keys --with-subkey-fingerprint 
@@ -21,7 +41,25 @@ sub   ed25519 2025-09-12 [A] [expires: 2027-09-12] # <- subkey with Authenticati
       90628AA69FA06A549FF66260A6881F8DCCD2DF8D
 sub   cv25519 2025-09-12 [E] [expires: 2027-09-12] # <- subkey with Encryption capability | fingerprints
       B1679EB215C10026B01D894BBE3A5091E349E2D9
-``` 
+```
+
+#### List secret keys
+
+```shell
+
+➤ gpg --list-secret-keys --keyid-format long
+[keyboxd]
+---------
+sec#  ed25519/56DD6A2CB5829A9B 2025-04-19 [C]
+      F9E59AC7E9ACD99700C0915856DD6A2CB5829A9B
+uid                 [ultimate] Preetam Zare (On Fedora) <preetamzare@gmail.com>
+ssb>  ed25519/87E309472536237E 2025-04-19 [S] [expires: 2027-04-19]
+ssb>  ed25519/C6105623D898B80D 2025-04-19 [A] [expires: 2027-04-19]
+ssb>  rsa4096/75C11336DB676992 2025-04-19 [E] [expires: 2027-04-19]
+
+```
+
+
 
 ## Identities
 
