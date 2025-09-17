@@ -11,7 +11,10 @@ fish_config theme show
 
 ### Enable Auto completion
 
-It is enabled by default
+It is enabled by default, you can disable it using
+
+set -g fish_autosuggestion_enabled 0
+
 
 ### Set variables
 
