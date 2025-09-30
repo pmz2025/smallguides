@@ -3,32 +3,58 @@
 Boot from USB Stick. USB Stick was created in the last post.
 Since this laptop and has WIFI, I'm going to focus on configuring wifi
 
-## find the name of the wifi card
-ip a 
+## Find the name of the wifi card
+`ip a` 
 
-## find the discoverable SSID
+## Find the discoverable SSID
 
 `iwctl station wlan0 get-networks`
 
-## Connect to the wifi card
+## Connect to the wifi
 
 `iwctl station wlan connect ZFHS60`
 
-enter paraphrase for your wifi
-
+enter paraphrase for your wifi<br>
 check if the ip was allocated
 
 `ip a`
 
-from here you can change the root password using
-`passwd`, check ssh service is running
+From here you can change the root password using
+`passwd`, and check ssh service is running
 
 `systemctl status sshd`
 
 and then ssh into the system via your remote machine
 
+> If you wish to work on this machine and it is non-english keyboard use
+
+`loadkeys de-latin1`
+
+## Optionally configure mirror using reflector
+
+reflector --country Germany --sort rate --latest 5 --save /etc/pacman.d/mirrorlist
+
+this step is considered optional because reflector updates the mirror <br>
+list by choosing 20 most recently synchronized HTTPS mirrors <br>
+and sorting them by download rate.
+
+## Checks
+
+check ntp is set to true by default.
+
+`timedatectl status`
+
+if not
+
+`timedatectl set-ntp true`
+
 
 ### Create partition table
+
+Root Partition holds entire filesystem and it is configured as 30GiB as LVM volume
+ESP EFI System Partition is the partition which hold bootloader files and it is configured
+as 512MiB. There is additional partition dedicated for boot which is configured as 1GiB
+
 
 ```shell
 # Following are the partition table created
@@ -40,17 +66,25 @@ Number  Start (sector)    End (sector)  Size       Code  Name
    4       272631808      2000408575   823.9 GiB   8E00  Linux LVM
 
 # remember the Code which are important while creating partition.
-# I used gdisk
+# I used gdisk and information on how to partition disk using
+# parted is shown in parted_stepd.md
 
 ```
 
 ### Format Partitions
 
+Lets assume
+
+/dev/nvme0n1p1 --> ESP
+/dev/nvme0n1p2 --> Boot
+/dev/nvme0n1p3 --> Swap
+/dev/nvme0n1p4 --> LVM (which in turn includes /home, /root)
+
 ```shell
-# Format partition 01 as FAT
+# Format partition 01 as FAT, this is efi system partition (ESP)
 mkfs.fat -F32 /dev/nvme0n1p1
 
-# Format partition 02 as ext4
+# Format partition 02 as ext4, this is boot partition
 mkfs.ext4 /dev/nvme0n1p2
 
 # Format partition 03 as swap Make swap partition
@@ -98,29 +132,40 @@ swapon -s
 
 
 ```shell
-# create directory
-mkdir -pv /mnt/boot
-mkdir -pv /mnt/home
 
 # mount root
-mount /dev/mapper/vgroup0-lv_root /mnt
-
-# mount boot
-mount /dev/nvme0n1p2 /mnt/boot
+mount -v /dev/mapper/vgroup0-lv_root /mnt
 
 # mount home
-mount /dev/mapper/vgroup0-lv_home /mnt/home
+mount --mkdir -v /dev/mapper/vgroup0-lv_home /mnt/home
+
+# mount boot
+mount --mkdir -v /dev/nvme0n1p2 /mnt/boot
+
+# mount EFI
+mount --mkdir -v /dev/nvme0n1p1 /boot/EFI 
+
+# use findmnt to check mountpoint
+
+findmnt -R /mnt
 
 ```
 
 ### Installing
 
-pacstrap -i /mnt base
+pacstrap -i /mnt base vim
+
+-i flag means prompt for package confirmation <br> (when needed und 
+run interactively)
+-K (capital k) initialize an empty packan keyring in the target.
 
 ### generate fstab file
 
 ```shell
 genfstab -U -p /mnt >> /mnt/etc/fstab && cat /mnt/etc/fstab
+
+# -U flag means use UUID
+# -p flag means exclude pseudo mounts (which is default behaviour, unsure why it is included)
 
 # Static information about the filesystems.
 # See fstab(5) for details.
@@ -141,45 +186,54 @@ UUID=6b9673ca-a434-4699-b83f-147c120edb54	none      	swap      	defaults  	0 0
 
 ```
 
-### Change root and start
+## Change root and start
 
-arch-chroot /mnt
+To directly interact with the new systems environment, tools <br>
+and configurations for the next steps as if you are booted into <br>
+it, change root
+
+`arch-chroot /mnt`
 
 #### set root password
 
 passwd for root
 
 #### create a user
-useradd -m -g users -G wheel repoleveldp
-passwd repoleveldp
+useradd -m -g users -G network,video,audio repolevedp
+passwd repolevedp
 
 
 
-# timedatectl set-timezone Europe/Berlin
+This has not worked. 
+```shell
+timedatectl set-timezone Europe/Berlin # not worked
+ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 hwclock --systohc # Sync hardware clock with system time
-
-# hostnamectl set-hostname darchl
+# hostnamectl set-hostname darchl not worked
+echo "archd" > /etc/hostname
+vim /etc/hosts
+# enter the following content
+127.0.0.1 localhost
+::1 localhost
+127.0.1.1 archd.localdomain archd
+```
 
 ### Package installations
 
-pacman -S base-devel dosfstools grub efibootmgr lvm2 mtools vim networkmanager openssh os-prober sudo gnome gnome-tweaks
+pacman -S base base-devel linux linux-headers linux-firmware intel-ucode dosfstools grub efibootmgr lvm2 mtools vim networkmanager openssh os-prober sudo gnome gnome-tweaks man git tree fish
 
 #### enable services
 
-systemctl enable NetworkManager
-systemctl enable sshd
-systemctl enable gdm
+systemctl enable NetworkManager sshd gdm bluetooth
 
 #### install linux kernels
-pacman -S linux linux-headers
+`pacman -S linux linux-headers`
 
 #### install hardware specific firmwares
-
-pacman -S linux-firmware
+`pacman -S linux-firmware`
 
 #### install nvidia specific drivers
-
-pacman -S nvidia nvidia-settings nvidia-utils
+pacman -S nvidia nvidia-settings nvidia-utils mesa vulkan-intel
 
 ### Boot configuration
 
@@ -189,17 +243,19 @@ HOOKS=(base udev autodetect microcode modconf kms keyboard keymap consolefont bl
 
 esp we have to add `encrypt lvm2`
 
-###
-
 mkinitcpio -p linux
 
 
 ### change locale to English
 vim /etc/locale.gen
-locale-gen
+and search and uncomment line starting
+with `#en_US.UTF-8 UTF-8`
 
-vim /etc/locale.conf
-LANG=en_US.UTF-8
+`locale-gen`
+
+echo "LANG=en_US.UTF-8" > vim /etc/locale.conf
+export LANG=en_US.UTF-8
+
 
 German keyboard and console
 
@@ -215,11 +271,17 @@ GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 cryptdevice=/dev/nvme0n1p4:vgroup0 quiet"
 
 ### mount EFI
 
-mkdir -v /boot/EFI
-
-mount /dev/nvme0n1p1 /boot/EFI/
+mount --mkdir /dev/nvme0n1p1 /boot/EFI 
 
 ### Create install and configure grub
 grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
 
 grub-mkconfig -o /boot/grub/grub.cfg
+
+exit
+
+mount -R /mnt
+
+- flag R stands for recursive
+
+reboot

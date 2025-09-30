@@ -140,14 +140,14 @@ conv=fsync oflag=direct status=progress
 
 #### Notes on dd
 
-- dd is same as cp but it also convert it during the copy and it does<br>
+- dd is same as cp but it also convert data during the copy and it does<br>
   copy the bit-to-bit copy of the file with lower-level I/O flow control.
 - dd by default outputs nothing until task has finish. This explains<br>
   why we have used status=progress.
 - bs stands for block size. In above command <br>
   `bs=4M` suggests we are taking 4MB block of data at a time. <br>
   bigger value will improve performance but at the cost of Memory. <br>
-  By default the size is 512 byter, but recommended value is 32M or 64M. <br>
+  By default the size is 512 byte, but recommended value is 32M or 64M. <br>
   Unsure why we are using `4M` in above command.
 - NB: conv and oflag is still unclear to me.
 
@@ -177,4 +177,16 @@ To check if the system is booted using EFI,
 
 EFI requires an EFI System Partition (ESP), which is FAT32 partition.
 This is first partition we create in install_steps.md using `-F32` flag.
-It is typically mounted at /boot or /boot/efi
+It is typically mounted at /boot or /boot/efi. Here EFI binary is stored.
+
+```shell
+
+➤ lsblk
+NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+zram0       251:0    0     8G  0 disk [SWAP]
+nvme0n1     259:0    0 476.9G  0 disk 
+├─nvme0n1p1 259:1    0   600M  0 part /boot/efi
+├─nvme0n1p2 259:2    0     1G  0 part /boot
+└─nvme0n1p3 259:3    0 475.4G  0 part /home
+                                      /
+```
