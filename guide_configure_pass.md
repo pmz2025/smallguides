@@ -58,6 +58,8 @@ git clone git@github.com:SecretRepoPath.git .password-store
 # check if all went well
 
 pass
+
+# you should see all your password entries.
 ```
 ## Reference
 
