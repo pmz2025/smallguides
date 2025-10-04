@@ -1,18 +1,36 @@
 # Post Installation Steps
 
+
 ## Change login keyboard
 
-login keyboard is set to US, since i have de keyboard, i have to change this
+When you login, the default keyboard is set to US, <br> Since I have German keyboard, i have to change this. <br>Change to root using `su -` and run
 
-sudo localectl set-keymap de-latin1
+`localectl set-keymap de-latin1`
 
-## Configure wifi
+## Configure sudo
 
-nmcli device wifi connect <nameOftheSiD> --ask
+Configure sudoers.d to allow the following without password
+
+- pacman
+- shutdown
+- restart
+
+```shell
+# as root vim /etc/sudoers.d/nameOftheUser
+
+Defaults timestamp_timeout=60
+repolevedp ALL=(ALL) ALL, NOPASSWD: /usr/sbin/reboot, /usr/sbin/shutdown, /usr/sbin/pacman
+```
+
+## Connect to wifi
+
+`nmcli device wifi connect <nameOftheSiD> --ask`
 
 ## Change shell for the user
 
 chsh -s $(which fish)
+
+## Install fonts and browsers
 
 Install fonts
 - ttf-ubuntu-font-family
@@ -22,23 +40,15 @@ Install fonts
 - ttf-fira-mono
 - ttf-fira-sans
 
-pacman -S code firefox chromium 
+`pacman -S code firefox chromium ttf-cascadia-code ttf-opensans noto-fonts tf-fira-mono ttf-fira-sans`
 
-Install opensource vscode
-Install firefox
-
-check/Verify
+## Check/Verify
 
 - timedatectl
     - set ntp to true
 - check hostname
 
-configure sudoers.d to allow the following without password
+## Install pass
 
-- pacman
-- shutdown
-- restart
-
-
-sudo pacman -S pass wl-clipboard yubikey-manager
+sudo pacman -S pass wl-clipboard yubikey-manager libfido2
 sudo systemctl enable --now pcscd

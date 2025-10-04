@@ -15,16 +15,14 @@ Since this laptop and has WIFI, I'm going to focus on configuring wifi
 `iwctl station wlan connect ZFHS60`
 
 enter paraphrase for your wifi<br>
-check if the ip was allocated
+check if the ip was allocated with `ip a`
 
-`ip a`
-
-From here you can change the root password using
+From here, you can change the root password using <br>
 `passwd`, and check ssh service is running
 
 `systemctl status sshd`
 
-and then ssh into the system via your remote machine
+and then ssh into the system via your remote machine.
 
 > If you wish to work on this machine and it is non-english keyboard use
 
@@ -32,7 +30,7 @@ and then ssh into the system via your remote machine
 
 ## Optionally configure mirror using reflector
 
-reflector --country Germany --sort rate --latest 5 --save /etc/pacman.d/mirrorlist
+`reflector --country Germany --sort rate --latest 5 --save /etc/pacman.d/mirrorlist`
 
 this step is considered optional because reflector updates the mirror <br>
 list by choosing 20 most recently synchronized HTTPS mirrors <br>
@@ -51,9 +49,9 @@ if not
 
 ### Create partition table
 
-Root Partition holds entire filesystem and it is configured as 30GiB as LVM volume
+Root Partition holds entire filesystem and it is configured as 30GiB as LVM volume.<br>
 ESP EFI System Partition is the partition which hold bootloader files and it is configured
-as 512MiB. There is additional partition dedicated for boot which is configured as 1GiB
+as 512MiB. <br> There is additional partition dedicated for boot which is configured as 1GiB
 
 
 ```shell
@@ -96,15 +94,17 @@ cryptsetup luksFormat /dev/nvme0n1p4
 # Create LVs but before that OPEN/DECRYPT the partition
 cryptsetup open --type=luks /dev/nvme0n1p4 lvm
 
-# use MAPPER to create physical volume
+# Create physical volume
 pvcreate /dev/mapper/lvm
+
+# Create volume group
 
 vgcreate vgroup0 /dev/mapper/lvm
 
-# root
+# Create LV for root
 lvcreate  -L 30G vgroup0 -n lv_root
 
-# home
+# Create LV for home
 lvcreate -L 500GB vgroup0 -n lv_home
 
 # UPDATE LVs
@@ -119,7 +119,7 @@ vgchange -ay
 # -a is all, y is to confirm
 
 
-
+# Format LVs
 mkfs.ext4 /dev/mapper/vgroup0-lv_root 
 mkfs.ext4 /dev/mapper/vgroup0-lv_home
 
@@ -136,7 +136,7 @@ swapon -s
 # mount root
 mount -v /dev/mapper/vgroup0-lv_root /mnt
 
-# mount home
+# mount home, --mkdir will automatically create dir
 mount --mkdir -v /dev/mapper/vgroup0-lv_home /mnt/home
 
 # mount boot
@@ -151,13 +151,13 @@ findmnt -R /mnt
 
 ```
 
-### Installing
+### Lets start Installation
 
 pacstrap -i /mnt base vim
 
 -i flag means prompt for package confirmation <br> (when needed und 
 run interactively)
--K (capital k) initialize an empty packan keyring in the target.
+-K (optionally, capital k) initialize an empty packman keyring in the target.
 
 ### generate fstab file
 
@@ -194,24 +194,28 @@ it, change root
 
 `arch-chroot /mnt`
 
-#### set root password
+### Set root password
 
 passwd for root
 
-#### create a user
+### Create a user
 useradd -m -g users -G network,video,audio repolevedp
 passwd repolevedp
 
+### Set timezone, hostname and hosts file
 
 
-This has not worked. 
 ```shell
-timedatectl set-timezone Europe/Berlin # not worked
+
+# set timezone
 ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
-hwclock --systohc # Sync hardware clock with system time
-# hostnamectl set-hostname darchl not worked
+
+# set hostname
 echo "archd" > /etc/hostname
+
+# set hosts
 vim /etc/hosts
+
 # enter the following content
 127.0.0.1 localhost
 ::1 localhost
@@ -220,68 +224,61 @@ vim /etc/hosts
 
 ### Package installations
 
-pacman -S base base-devel linux linux-headers linux-firmware intel-ucode dosfstools grub efibootmgr lvm2 mtools vim networkmanager openssh os-prober sudo gnome gnome-tweaks man git tree fish
+```shell
+pacman -S base base-devel linux linux-headers linux-firmware intel-ucode dosfstools grub efibootmgr lvm2 mtools vim networkmanager openssh os-prober sudo gnome gnome-tweaks man git tree fish nvidia nvidia-settings nvidia-utils mesa vulkan-intel
+```
 
-#### enable services
+#### Enable services
 
 systemctl enable NetworkManager sshd gdm bluetooth
 
-#### install linux kernels
-`pacman -S linux linux-headers`
-
-#### install hardware specific firmwares
-`pacman -S linux-firmware`
-
-#### install nvidia specific drivers
-pacman -S nvidia nvidia-settings nvidia-utils mesa vulkan-intel
-
-### Boot configuration
+### Configure Boot for the encrypted volume
 
 edit file `/etc/mkinitcpio.conf` and ensure the line looks below
 
-HOOKS=(base udev autodetect microcode modconf kms keyboard keymap consolefont block encrypt lvm2 filesystems fsck)
+`HOOKS=(base udev autodetect microcode modconf kms keyboard keymap consolefont block encrypt lvm2 filesystems fsck)`
 
 esp we have to add `encrypt lvm2`
 
-mkinitcpio -p linux
+`mkinitcpio -p linux`
 
 
-### change locale to English
-vim /etc/locale.gen
-and search and uncomment line starting
-with `#en_US.UTF-8 UTF-8`
+### Change locale to English
+vim `/etc/locale.gen`
+and search and uncomment line starting <br>
+with `#en_US.UTF-8 UTF-8` and execute
 
 `locale-gen`
-
-echo "LANG=en_US.UTF-8" > vim /etc/locale.conf
-export LANG=en_US.UTF-8
-
-
-German keyboard and console
-
-/etc/vconsole.conf:
-
-KEYMAP=de-latin1
-FONT=eurlatgr
 
 ### Configure grub to boot from encrypted device
 
 vim /etc/default/grub and change the line as shown below
 GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 cryptdevice=/dev/nvme0n1p4:vgroup0 quiet"
 
-### mount EFI
+### Create Grub configuration
 
-mount --mkdir /dev/nvme0n1p1 /boot/EFI 
+`mount --mkdir /dev/nvme0n1p1 /boot/EFI`
 
 ### Create install and configure grub
+
+```shell
 grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
 
 grub-mkconfig -o /boot/grub/grub.cfg
+```
 
+### Final Steps
+
+```shell
+# chroot exiting, type
 exit
 
-mount -R /mnt
+# Unmount all mountPoints under /mnt 
+umount -R /mnt
 
-- flag R stands for recursive
+# - flag R stands for recursive
 
 reboot
+```
+
+Now follow postinstallations.md

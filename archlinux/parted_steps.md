@@ -33,6 +33,8 @@ parted /dev/nvme0n1 rm 4
 ```
 
 ## Create partitions
+
+```shell
 parted /dev/nvme0n1 --script mklabel gpt
 
 parted /dev/nvme0n1 --script mkpart "EFISystemPartition" fat32 1MiB 1GiB
@@ -40,23 +42,39 @@ parted /dev/nvme0n1 --script mkpart "RootPartition" ext4 1GiB 2GiB
 parted /dev/nvme0n1 --script mkpart "SwapPartition" linux-swap  2GiB 130GiB
 parted /dev/nvme0n1 --script mkpart "HomePartition" ext4  130GiB 100%
 
+```
+
+
 ### Check optionally if partitioned are aligned
 
+```shell
 parted /dev/nvme0n1 --script align-check opt 1
 parted /dev/nvme0n1 --script align-check opt 2
 parted /dev/nvme0n1 --script align-check opt 3
 parted /dev/nvme0n1 --script align-check opt 4
 
-or you can use a simple script
+# or you can use a simple script
 
 for i in {1..4}; do parted /dev/nvme0n1 --script align-check opt $i && echo $?; done
 
 parted /dev/nvme0n1 print
 
+```
+
+### Set flags on the partitions
+
+``` shell
+
 parted /dev/nvme0n1 --script set 1 esp on (esp is an alias for boot on GPT)
 parted /dev/nvme0n1 --script set 3 swap on 
 parted /dev/nvme0n1 --script set 4 lvm on
 
+```
+
+### Finally check the partitions
+
+
+```shell
 parted /dev/nvme0n1 print
 
 root@archiso ~ # parted /dev/nvme0n1 print
@@ -72,3 +90,4 @@ Number  Start   End     Size    File system  Name                Flags
  3      2147MB  140GB   137GB                SwapPartition       swap
  4      140GB   1024GB  885GB                HomePartition       lvm
 
+```
