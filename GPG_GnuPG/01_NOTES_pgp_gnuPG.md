@@ -165,3 +165,41 @@ It is card which has
 - storage: to store primary and sub keys
 - software: do encryption and decryption operations
 
+## Before importing the keys
+
+Before importing the keys, check what inside the keys
+
+gpg --show-keys 
+
+```bash
+➤ gpg --show-keys $HOME/Documents/smallguides/GPG_GnuPG/jms1.pub.asc 
+pub   rsa4096 2019-03-21 [SC] [expires: 2026-01-01]
+      E3F7F5F76640299C5507FBAA49B9FD3BB4422EBB
+uid                      John Simpson <jms1@jms1.net>
+uid                      John Simpson <kg4zow@mac.com>
+uid                      John Simpson <kg4zow@kg4zow.us>
+sub   rsa4096 2019-03-21 [E] [expires: 2026-01-01]
+sub   rsa4096 2019-03-21 [S] [expires: 2026-01-01]
+sub   rsa4096 2019-03-21 [A] [expires: 2026-01-01]
+
+# another example is with Fedora key
+
+➤ gpg --show-keys --with-fingerprint --keyid-format long fedora.gpg
+pub   rsa4096/D0622462E99D6AD1 2023-08-08 [SCE]
+      Key fingerprint = 466C F2D8 B60B C305 7AA9  453E D062 2462 E99D 6AD1
+uid                            Fedora (41) <fedora-41-primary@fedoraproject.org>
+
+pub   rsa4096/C8AC4916105EF944 2024-02-12 [SCE]
+      Key fingerprint = B0F4 9504 58F6 9E11 50C6  C5ED C8AC 4916 105E F944
+uid                            Fedora (42) <fedora-42-primary@fedoraproject.org>
+
+pub   rsa4096/829B606631645531 2024-08-10 [SCE]
+      Key fingerprint = C6E7 F081 CF80 E131 4667  6E88 829B 6066 3164 5531
+uid                            Fedora (43) <fedora-43-primary@fedoraproject.org>
+
+pub   rsa4096/DBFCF71C6D9F90A6 2025-01-14 [SCE]
+      Key fingerprint = 36F6 12DC F27F 7D1A 48A8  35E4 DBFC F71C 6D9F 90A6
+uid                            Fedora (44) <fedora-44-primary@fedoraproject.org>
+
+
+```

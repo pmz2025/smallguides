@@ -143,7 +143,7 @@ mount --mkdir -v /dev/mapper/vgroup0-lv_home /mnt/home
 mount --mkdir -v /dev/nvme0n1p2 /mnt/boot
 
 # mount EFI
-mount --mkdir -v /dev/nvme0n1p1 /boot/EFI 
+mount --mkdir -v /dev/nvme0n1p1 /mnt/boot/EFI 
 
 # use findmnt to check mountpoint
 

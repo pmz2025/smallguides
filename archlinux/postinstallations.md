@@ -15,6 +15,15 @@ nmcli device wifi connect <nameOftheSiD> --ask
 chsh -s $(which fish)
 
 Install fonts
+- ttf-ubuntu-font-family
+- ttf-cascadia-code
+- ttf-opensans
+- noto-fonts
+- ttf-fira-mono
+- ttf-fira-sans
+
+pacman -S code firefox chromium 
+
 Install opensource vscode
 Install firefox
 
@@ -29,3 +38,7 @@ configure sudoers.d to allow the following without password
 - pacman
 - shutdown
 - restart
+
+
+sudo pacman -S pass wl-clipboard yubikey-manager
+sudo systemctl enable --now pcscd
