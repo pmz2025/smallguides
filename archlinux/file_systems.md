@@ -31,7 +31,7 @@ As per the document, it is used by web and ftp servers
 ## /sbin
 
 Reserved for the root only. e.g. reboot and shutdown are here.
-/usr/sbin is linked to /usr/bin
+/usr/sbin is symlinked to /usr/bin
 
 ## /opt
 
@@ -41,4 +41,4 @@ and third party software.
 ## /lib
 
 This directory contains library and kernel modules necessary for running
-binaries found in /bin and /sbin.
+binaries found in /bin and /sbin. lib64 is symlinked to lib

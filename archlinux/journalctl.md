@@ -5,7 +5,7 @@ Mastering journalctl is must for troubleshooting.
 journalctl -xb
 
 - flag -x stands for providing detail message where applicable
-  -b flag to parse all boot
+-b flag to parse all boot
 
 But check if the logs are persistent using
 
