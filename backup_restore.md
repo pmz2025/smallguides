@@ -1,21 +1,58 @@
 # Backup and Restore Guide
 
-To backup a directory you need to first create a repository on your HDD/Remote location.
+To backup a directory you need to first create a repository on your HDD/Remote location.<br>
 Once it is created you can start backing up your data.
 
-Here is the sample command.
-
-My Backup repository is mounted on `/home/xpreetam/western_mypass25E4`
+My Backup repository is mounted on `~/westerndigitial`
 
 Let me first list down the snapshots
 
+But First let me set the password in a variable. I'm doing this using gnuPG and yubikey.<br>
+So first create a file and enter your password into a file e.g. myResticpasswd.secret
+Set the variable using the shell of your choice. <br>
+I'm using fish shell
+
 ```shell
-restic -r western_mypass25E4/ snapshots
+# set the variable as mentioned below
+set RESTIC_PASSWORD_COMMAND "gpg --quiet --decrypt myResticpasswd.secret.asc"
+
+# This command decrypts the resticpasswd.secret.asc, while decrypting,
+# it will ask for yubikey key and touch
 ```
+I'm encrypting this file using my own key using --recipient and as a best
+practice signing it as well.
+
+```shell
+gpg --encrypt --sign --recipient repolevedp@gmail.com --armor myResticpasswd.secret
+# file with name myResticpasswd.secret.asc is created.
+```
+You should ideally backup and then delete the original file.
+
+```shell
+# delete the original file
+rm myResticpasswd.secret
+```
+
+As you can see, I'm no where entering my paraphrase required for <br>
+restic. This command will decrypt the password <br>
+and send it to restic to list snapshots.
+
+
+```shell
+restic --password-command $RESTIC_PASSWORD_COMMAND -r ~/westerndigitial/ snapshots
+```
+
+**_OUTput_**
+```v
+gpg: Signature made Thu Oct  9 13:01:53 2025 CEST
+gpg:                using EDDSA key 9ECBC32B558C3E75A6BE989DA82572C55C8846C1
+gpg: Good signature from "Preetam Zare <repolevedp@gmail.com>" [ultimate]
+repository 5bf9de6e opened (version 1)
+```
+
 **OUTput**
 ```shell
-restic -r westerndigitial/ snapshots
-enter password for repository: 
+restic --password-command $RESTIC_PASSWORD_COMMAND -r westerndigitial/ snapshots
 repository 5bf9de6e opened (version 1)
 ID        Time    Host        Tags        Paths     Size
 
@@ -34,7 +71,7 @@ SNApshot id helps you list down what is inside specific snapshot using the follo
 
 ```shell
 snapshotid=e47c137b
-restic -r western_mypass25E4/ ls $snapshotid
+restic --password-command $RESTIC_PASSWORD_COMMAND -r westerndigitial/ ls $snapshotid
 ```
 
 ## REStoring data
@@ -47,14 +84,19 @@ structure would be maintained. e.g. if you are restoring /home/YOUrname/Document
 it will restore backup_data/home/YOUrname/Documents
 
 ```shell
-restic -r westerndigitial restore --verbose --target backup_data 873857a9
+restic --password-command $RESTIC_PASSWORD_COMMAND\
+-r westerndigitial \ estore --verbose --target \
+backup_data 873857a9
 ``` 
 
 ## BACkup data
 
 To backup data in Document directory, use the following, please note you will need repo password
-
-`restic -r western_mypass25E4 --verbose backup ~/Documents/`
+```shell
+restic --password-command $RESTIC_PASSWORD_COMMAND \
+-r westerndigitial --verbose \
+backup ~/Documents/
+```
 
 ## References
 
