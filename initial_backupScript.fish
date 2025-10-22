@@ -6,7 +6,7 @@
 # 
 
 set RESTIC_PASSWORD_COMMAND "gpg --decrypt --quiet myTrueResticPasswd.gpg.asc"
-set RESTIC_REPOSITORY $HOME/westerndigitial
+set RESTIC_REPOSITORY $HOME/westerndigitialcd
 
 # mount the directory
 

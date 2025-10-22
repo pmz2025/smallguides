@@ -8,7 +8,7 @@ My Backup repository is mounted on `~/westerndigitial`
 Let me first list down the snapshots
 
 But First let me set the password in a variable. I'm doing this using gnuPG and yubikey.<br>
-So first create a file and enter your password into a file e.g. myResticpasswd.secret
+As a first step, create a file and enter your password into a file e.g. myResticpasswd.secret
 Set the variable using the shell of your choice. <br>
 I'm using fish shell
 
@@ -17,9 +17,10 @@ I'm using fish shell
 set RESTIC_PASSWORD_COMMAND "gpg --quiet --decrypt myResticpasswd.secret.asc"
 
 # This command decrypts the resticpasswd.secret.asc, while decrypting,
-# it will ask for yubikey key and touch
+# it will ask for yubikey key and presence. But actually encrypting is
+# show below
 ```
-I'm encrypting this file using my own key using --recipient and as a best
+I'm encrypting this file using my own key using --recipient myself and as a best
 practice signing it as well.
 
 ```shell
@@ -33,7 +34,7 @@ You should ideally backup and then delete the original file.
 rm myResticpasswd.secret
 ```
 
-As you can see, I'm no where entering my paraphrase required for <br>
+As you can see below, I'm no where entering my paraphrase required for <br>
 restic. This command will decrypt the password <br>
 and send it to restic to list snapshots.
 
