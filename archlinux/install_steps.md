@@ -222,10 +222,14 @@ vim /etc/hosts
 127.0.1.1 archd.localdomain archd
 ```
 
-### Package installations
+### Package installationscales
 
 ```shell
-pacman -S base base-devel linux linux-headers linux-firmware intel-ucode dosfstools grub efibootmgr lvm2 mtools vim networkmanager openssh os-prober sudo gnome gnome-tweaks man git tree fish nvidia nvidia-settings nvidia-utils mesa vulkan-intel
+pacman -S base base-devel linux linux-headers linux-firmware \
+intel-ucode dosfstools grub efibootmgr lvm2 mtools vim \
+networkmanager openssh os-prober sudo gnome gnome-tweaks \
+man git tree fish nvidia nvidia-settings nvidia-utils \
+mesa vulkan-intel
 ```
 
 #### Enable services
@@ -264,8 +268,18 @@ GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 cryptdevice=/dev/nvme0n1p4:vgroup0 quiet"
 ```shell
 grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
 
+# grub_efi will be created under ESP directory which is /boot/EFI
+
+# grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=GRUB
+
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
+
+#### Flags
+
+--efi-directory and --bootloader-id are specific to GRUB UEFI <br>
+--efi-directory --> use DIR as the EFI System Partition root <br>
+--bootloader-id=ID --> the ID of bootloader. This option is only available on EFI and Macs.
 
 ### Final Steps
 

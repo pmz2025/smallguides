@@ -58,6 +58,6 @@ pacman -S code firefox chromium ttf-cascadia-code ttf-opensans noto-fonts tf-fir
 ## Install pass
 
 ```shell
-sudo pacman -S pass wl-clipboard yubikey-manager libfido2 
+sudo pacman -S pass wl-clipboard yubikey-manager libfido2 hwinfo pam-u2f restic
 sudo systemctl enable --now pcscd
 ```

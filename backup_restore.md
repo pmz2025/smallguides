@@ -98,6 +98,22 @@ restic --password-command $RESTIC_PASSWORD_COMMAND \
 backup ~/Documents/
 ```
 
+## Change the paraphrase or change the repo password
+
+In restic it is referred as key and this key is per repo. <br>
+You run list key command as show below, you get key assoicated <br>
+with the repo.
+
+```shell
+↪ restic -r ~/westerndigitial/ key list
+enter password for repository: 
+repository 5bf9de6e opened (version 1)
+ ID        User      Host    Created
+------------------------------------------------
+*f46f37fb  poseidon  dell03  2025-03-20 17:58:34
+------------------------------------------------
+``` 
+
 ## References
 
 [Working with repositories](https://restic.readthedocs.io/en/stable/045_working_with_repos.html)

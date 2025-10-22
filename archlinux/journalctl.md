@@ -1,5 +1,7 @@
 # All about Journalctl
 
+The journalctl file is located under /etc/systemd/journald.conf
+
 Mastering journalctl is must for troubleshooting.
 
 journalctl -xb

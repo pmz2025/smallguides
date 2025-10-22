@@ -158,7 +158,6 @@ UEFI - Universal Extended Firmware Interface
 To check if the system is booted using EFI, 
 
 ```shell
-
 ➤ tree -C -L 1 /sys/firmware/efi
 /sys/firmware/efi
 ├── config_table
@@ -172,7 +171,6 @@ To check if the system is booted using EFI,
 └── systab
 
 5 directories, 5 files
-
 ```
 
 EFI requires an EFI System Partition (ESP), which is FAT32 partition.
@@ -180,7 +178,6 @@ This is first partition we create in install_steps.md using `-F32` flag.
 It is typically mounted at /boot or /boot/efi. Here EFI binary is stored.
 
 ```shell
-
 ➤ lsblk
 NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
 zram0       251:0    0     8G  0 disk [SWAP]
