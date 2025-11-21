@@ -4,12 +4,13 @@ Private key creation can be done on any machine.
 
 ```bash
 openssl genpkey -algorithm RSA -out ${HOSTNAME}.key -pkeyout rsa_keygen_bits:4096
+# old style
+openssl genrsa -out $HOSTNAME 4096
 ```
 
 ## Where to find help?
 
 -algorithm can be (RSA|DSA|DH|DHX), where do i find this information? man openssl-genpkey
-
 The following text is copied from the manpage
 
 ```shell

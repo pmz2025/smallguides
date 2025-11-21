@@ -73,7 +73,7 @@ wget https://archlinux.org/iso/2025.09.01/sha256sums.txt
 # I wish to delete line 2 till 4
 
 ➤ sed '2,4 d' sha256sums.txt
-961002fab836819b599e770aa25ff02bff1697d1d051140062066a5ff47d6712  archlinux-2025.09.01-x86_64.is
+961002fab836819b599e770aa25ff02bff1697d1d051140062066a5ff47d6712  archlinux-2025.09.01-x86_64.iso
 
 # lets do checksum
 ➤ cat $(echo sha256sums.txt) | sha256sum --check 

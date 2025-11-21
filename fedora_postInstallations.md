@@ -9,7 +9,9 @@ hostnamectl set-hostname $HOSTNAME
 ## Install all softwares
 
 ```shell
-sudo dnf install cascadia-mono-pl-fonts.noarch fish vim pass yubikey-manager hwinfo pam-u2f restic pamu2fcfg seahorse podman-compose
+sudo dnf install cascadia-mono-pl-fonts.noarch fish vim \
+pass yubikey-manager hwinfo pam-u2f restic pamu2fcfg \
+seahorse podman-compose sysstat okular
 ```
 
 ## CHAnge shell

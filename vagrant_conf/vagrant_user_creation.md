@@ -13,12 +13,13 @@ So here is what i do
 ```shell
 
 ssh vagrant
-export LOGINNAME=preetam
-sudo useradd -c 'YourName.LastName' LOGINNAME
-sudo passwd LOGINNAME
-echo -e "Defaults timestamp_timeout=60\LOGINNAME ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/LOGINNAME
-su LOGINNAME
+export LOGINNAME=zorro
+sudo useradd -c 'Mr.Zorro' $LOGINNAME
+sudo passwd $LOGINNAME
+echo -e "Defaults timestamp_timeout=60\\n$LOGINNAME ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$LOGINNAME
+su $LOGINNAME
 mkdir -pv $HOME/.ssh
+chmod -vR u=rwX && chmod -vR og-rwx $HOME/.ssh
 cd $HOME/.ssh
 vim authorized_keys
 
@@ -33,5 +34,3 @@ ssh-keygen -t ed25519 -C "Purpose of the key created on $(date +%F)"
 
 ssh LOGINNAME@ipofthevagrantmachine.
 ```
-
-
