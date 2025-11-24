@@ -1,31 +1,19 @@
-# Instructions
-  # set -gx SUB_USERNAME YourRedHatDeveloperLogin
-  # set -gx SUB_PASSWORD YourRedHatDeveloperLoginPasswd 
-# End of Instructions
-
 Vagrant.configure("2") do |config|
-  config.vm.box = "generic/rhel9"
-  config.vm.hostname = "syslogclient02"
-  config.vm.network "private_network", ip: "192.168.56.81"
-  config.vm.box_check_update = true
-  config.vm.synced_folder ".", "/vagrant", disabled: true
-  
-  config.vm.provision "shell" do |s|
-    s.env = {
-              SUB_USERNAME_VAR:ENV['SUB_USERNAME'], 
-              SUB_PASSWORD_VAR:ENV['SUB_PASSWORD']
-            }
-    s.inline = 'subscription-manager register --username $SUB_USERNAME_VAR --password $SUB_PASSWORD_VAR' # register your system, please ensure find a solution to unregister
-    s.inline = 'dnf update -y' # update your fedora/rhel image
-    s.inline = 'dnf install tree git' # install software of your choice
-    s.inline = 'timedatectl set-local-rtc 0' # need to fix rtc
-    s.reboot = true # reboots even if there is no updates. !!! Be Careful 
-  end # ends shell
+	config.vm.box = "generic/rhel9"
+	config.vm.box_check_update = true
+	config.vm.hostname = "testrhel9"
+	config.vm.network "private_network", ip: "192.168.56.90"
+	config.vm.synced_folder "." "/vagrant", disabled: true
+# attach iso
+	config.vm.provision 'file', source: '/usr/share/virtualbox/VBoxGuestAdditions.iso', destination: '/tmp/VBoxGuestAdditions.iso'
+# shell configuration
+	config.vm.provision "shell" do |s|
+		s.env = {
+			"SUB_USERNAME_VAR":ENV['SUB_USERNAME'],
+			"SUB_PASSWORD_VAR":ENV['SUB_PASSWORD']
+		}
+		s.path = 'scripts/postinstall.sh'
 
-  if Vagrant.has_plugin?("vagrant-timezone") # Plugin to sync time even if host is suspended
-    config.timezone.value = "UTC"
-  end # ends plugin
+	end
+end
 
-end # ends config
-
-# subscription-manager register --username --password

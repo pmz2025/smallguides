@@ -2,6 +2,7 @@
 
 ### First add Vagrant .repo file
 
+#### Only for RHEL
 ```bash filename /etc/yum.repos.d/virtualbox.repo
 cat <<EOF>> virtualbox.repo
 [virtualbox]
@@ -18,7 +19,7 @@ sudo dnf update -y
 ```
 
 ### Second install vagrant, here is the .repo file
-
+#### Only for RHEL
 ```bash filename /etc/yum.repo.d/vagrant.repo
 cat <<EOF>>vagrant.repo
 [vagrant]
@@ -32,6 +33,24 @@ sudo chown -v root:root vagrant.repo
 sudo mv -v vagrant.repo /etc/yum.repos.d/
 sudo dnf update -y
 ```
+
+## For Fedora
+
+With fish shell you have to use printf with `%s` and new line `\n`
+Here %s stands for string.
+PLEASE DO NOT ADD REPO,
+
+```shell file name /etc/yum.repos.d/virtualbox.repo using fish shell
+❯ printf %s\n "[virtualbox]
+  name=Fedora $releasever - $basearch - VirtualBox
+  baseurl=http://download.virtualbox.org/virtualbox/rpm/fedora/\$releasever/\$basearch
+  enabled=1
+  gpgcheck=1
+  repo_gpgcheck=1
+  gpgkey=https://www.virtualbox.org/download/oracle_vbox_2016.asc" | sudo tee /etc/yum.repos.d/virtualbox.repo
+```
+
+
 
 or simple use the following command
 
@@ -54,7 +73,6 @@ sudo dnf install pesign openssl kernel-devel mokutil keyutils vagrant VirtualBox
 ```bash
 sudo mkdir -pv /root/signed-modules
 openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj "/CN=vagrantbox/"
-
 sudo chown -v root:root MOK.der MOK.priv
 sudo mv -v MOK.der MOK.priv /root/signed-modules
 sudo mokutil --import /root/signed-modules/MOK.der

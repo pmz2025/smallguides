@@ -1,4 +1,4 @@
-# Playing with EOF and sed
+# Playing with EOF (hereDocs) and sed
 
 ## Scenario: I wish to create kubernetes.repo file and it has a empty line (at the end) which I wish to delete
 

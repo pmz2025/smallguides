@@ -5,8 +5,8 @@
 # declare the important variables
 # 
 
-set RESTIC_PASSWORD_COMMAND "gpg --decrypt --quiet myTrueResticPasswd.gpg.asc"
-set RESTIC_REPOSITORY $HOME/westerndigitialcd
+set -gx RESTIC_PASSWORD_COMMAND "gpg --decrypt --quiet myTrueResticPasswd.gpg.asc"
+set -gx RESTIC_REPOSITORY $HOME/westerndigitialcd
 
 # mount the directory
 

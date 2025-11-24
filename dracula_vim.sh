@@ -1,4 +1,4 @@
-# configure dracula thema on vim
+# Configure dracula thema on vim
 
 mkdir -pv $HOME/.vim/pack/themes/start
 cd $HOME/.vim/pack/themes/start
