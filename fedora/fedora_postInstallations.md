@@ -4,13 +4,6 @@
 set HOSTNAME yourLinuxHostName
 hostnamectl set-hostname $HOSTNAME
 ```
-## Create initial directories
-
-set -gx username $(whoami)
-mkdir -pv /home/$username/MyEncUSB
-mkdir -pv /home/$username/myWestenDigital
-mkdir -pv /home/$username/restorework
-mkdir -pv /home/$username/gitrepos
 
 ## Install all softwares
 
@@ -22,7 +15,19 @@ seahorse podman-compose sysstat okular gnupg2-scdaemon
 
 ## CHAnge shell
 
+```shell
 chsh -s $(which fish)
+```
+## Create initial directories
+
+```shell
+set -gx USERNAME $(whoami)
+mkdir -pv /home/$USERNAME/MyEncUSB
+mkdir -pv /home/$USERNAME/myWestenDigital
+mkdir -pv /home/$USERNAME/restorework
+mkdir -pv /home/$USERNAME/gitrepos
+```
+
 
 ## CHAnge font
 ## CHAnge fish prompt and theme
@@ -39,13 +44,15 @@ echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com
 ```
 
 
-modify sudoers.d
+## modify sudoers.d
 
 sudo vim /etc/sudoers.d/nameOftheUser
 
 ```shell
+printf %s\n "
 Defaults timestamp_timeout=60
-repolevedp ALL=(ALL) ALL, NOPASSWD: /usr/sbin/systemctl, /usr/sbin/dnf
+$USERNAME ALL=(ALL) ALL, NOPASSWD: /usr/sbin/systemctl, /usr/sbin/dnf
+" | sudo tee /etc/sudoers.d/$USERNAME
 ```
 
 ## Enable yubikey based login
