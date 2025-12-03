@@ -43,7 +43,10 @@ parted /dev/nvme0n1 --script mkpart "SwapPartition" linux-swap  2GiB 130GiB
 parted /dev/nvme0n1 --script mkpart "HomePartition" ext4  130GiB 100%
 
 ```
-
+### All in a single step
+```shell
+parted /dev/nvme0n1 --script mklabel gpt mkpart "EFISystemPartition" fat32 1MiB 1Gib
+```
 
 ### Check optionally if partitioned are aligned
 
