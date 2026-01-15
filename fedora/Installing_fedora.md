@@ -47,4 +47,3 @@ Why LUKS2?
 
 vi /mnt/sysroot/boot/efi/EFI/fedora/
 
-

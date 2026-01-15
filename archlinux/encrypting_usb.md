@@ -270,3 +270,31 @@ This command is responsible for attaching and detaching encrypted devices.<br>
 During the boot systemd-cryptsetup@.service is called.
 
 
+## How to persistently mount a encrypted drive and open it using yubikey
+
+All you need is edit crypttab and fstab file.
+
+MyEncUSB is actually a dev mapper device as created above.
+uuid is disk uuid which you can find using udevadm command mentioned above.
+third field is none which means you must provide paraphrase.
+fourth field is referring to fido device which you have enrolled above
+
+```shell file /etc/crypttab /etc/fstab
+MyEncUSB	/dev/disk/by-uuid/5e756634-6469-4361-94eb-2ab0db3a11c3	none	fido2-device=auto
+```
+
+fstab file is standard, all you must ensure is to use find the uuid of the block device using blkid
+
+```shell
+sudo blkid /dev/sda1 | awk '{print $2}'
+```
+
+```shell file /etc/fstab
+UUID=dbbfd953-877b-41b2-b4b6-b5bc6b7e1911 / btrfs subvol=root,compress=zstd:1 0 0
+UUID=25684b4d-6bbe-4491-b68a-83d0966cbc83 /boot ext4 defaults 1 2
+UUID=4E6C-8810 /boot/efi vfat umask=0077,shortname=winnt 0 2
+UUID=dbbfd953-877b-41b2-b4b6-b5bc6b7e1911 /home btrfs subvol=home,compress=zstd:1 0 0
+# encrypted device
+UUID=f1fee3be-a601-416f-a1a1-10ce6661b434	/home/letsdodev/MyEncUSB ext4	auto 0 0
+```
+

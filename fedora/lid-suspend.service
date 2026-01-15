@@ -1,0 +1,11 @@
+# mkdir -pv $HOME/.config/systemd/user/
+# vim $HOME/.config/systemd/user/$HOME/.config/systemd/user/ and enter
+# the content below
+[Unit]
+Description=Prevent suspend on lid close
+[Service]
+ExecStart=/usr/bin/systemd-inhibit --what=handle-lid-switch sleep infinity
+[Install]
+WantedBy=default.target
+
+

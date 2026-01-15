@@ -24,3 +24,20 @@ gpg --decrypt secretpass.gpg.asc | wl-copy
 ```
 5. NOW, simply using ctrl + p to paste your password into 1Password.
 
+## Copy from 1Password to pass
+
+1. copy the password from 1Password in a clipboard
+2. echo $(clippaste) | gpg --encrypt --armor --recipient <name> --out nameofthefile.asc
+3. email this file
+4. decrpyt the file using the following command
+
+```shell
+set awsin $(gpg --decrypt --quiet Downloads/aws_in.asc)
+
+pass insert test/sampleentry
+# enter test123 and test123
+pass edit test/sampleentry
+
+# paste the password from the clipboard
+
+```
