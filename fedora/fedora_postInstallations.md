@@ -62,8 +62,10 @@ CREate u2f_mappings file inside /etc
 ```shell
 # yubikey 1
 pamu2fcfg > u2f_mappings
+
 # backup yubikey
 pamu2fcfg -n >> u2f_mappings
+
 # copy file
 sudo mv -v u2f_mappings /etc
 ```

@@ -16,7 +16,7 @@ sudo dnf install dnf5-plugin-automatic
 
 2. REAd the man pages for dnf5-plugin-automatic.
 
-```fish
+```shell
 # create a file automatic.conf under /etc/dnf/automatic.conf
 # which has following entries
 

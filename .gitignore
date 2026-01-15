@@ -1,2 +1,15 @@
 [B/b]in/
 *.token
+*.env.*
+# Private keys
+
+*.pem
+*.keys
+*.p12
+
+# local only credentials
+
+aws-credentials.json
+config.local.json
+secrets.json
+firebase-service-account.json
